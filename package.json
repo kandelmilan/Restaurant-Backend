@@ -2,18 +2,32 @@
   "name": "restaurantbackend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "main": "src/index.js",
   "type": "commonjs",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev"
+  },
   "dependencies": {
+    "@prisma/client": "^4.15.0",
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",
-    "express": "^5.2.1",
-    "mongoose": "^9.3.3"
-  }
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2",
+    "prisma": "^4.15.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kandelmilan/Restaurant-Backend.git"
+  },
+  "bugs": {
+    "url": "https://github.com/kandelmilan/Restaurant-Backend/issues"
+  },
+  "homepage": "https://github.com/kandelmilan/Restaurant-Backend#readme"
 }

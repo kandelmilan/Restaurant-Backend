@@ -1,0 +1,37 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+model Admin {
+  id       Int     @id @default(autoincrement())
+  email    String  @unique
+  password String
+  name     String?
+  role     String  @default("admin")
+  createdAt DateTime @default(now())
+}
+
+model Menu {
+  id          Int     @id @default(autoincrement())
+  name        String
+  price       Float
+  image       String
+  category    Category
+  isVeg       Boolean @default(true)
+  spiceLevel  Int     @default(1)
+  description String?
+  createdAt   DateTime @default(now())
+}
+
+enum Category {
+  curry
+  tandoor
+  starters
+  sides
+  drinks
+}
