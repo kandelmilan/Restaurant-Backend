@@ -14,7 +14,7 @@ const getHeroes = (req, res) => {
 };
 
 // POST create a hero
-const createHero = (req, res) => {  // ✅ fixed order
+const createHero = (req, res) => {
     heroModel.createHero(req.body, (err, result) => {
         if (err) {
             console.error("Error creating hero:", err);

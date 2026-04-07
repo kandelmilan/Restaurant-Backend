@@ -8,7 +8,7 @@ db.query("SHOW TABLES", (err, result) => {
         console.log("Error checking tables:", err);
     } else {
         console.log("Tables:", result);
-        console.log(`MySQL Connected and Server will run at http://localhost:${PORT}`);
+        console.log(`MySQL Connected and Server will run at Port : ${PORT}`);
     }
 });
 

@@ -5,7 +5,7 @@ const db = mysql.createConnection({
   user: "root",
   password: "", // XAMPP default
   database: "restaurant_db",
-
+  port: 8080
 });
 
 db.connect((err) => {
