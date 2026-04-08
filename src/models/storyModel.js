@@ -26,15 +26,15 @@ const updateStory = (id, data, callback) => {
         SET subtitle=?, title=?, content=?, highlight=?
         WHERE id=?
     `;
+
     db.query(sql, [
-        data.subtitle,
-        data.title,
-        data.content,
-        data.highlight,
+        data.subtitle || "",
+        data.title || "",
+        data.content || "",
+        data.highlight || "",
         id,
     ], callback);
 };
-
 // Delete story
 const deleteStory = (id, callback) => {
     db.query("DELETE FROM stories WHERE id=?", [id], callback);
