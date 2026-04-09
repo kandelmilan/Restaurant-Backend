@@ -5,10 +5,12 @@ const router = express.Router();
 const heroRoutes = require("./heroRoutes");
 const adminRoute = require("./adminRoutes");
 const storyRoutes = require("./storyRoutes");
+const menuRoutes = require("./menuRoutes");
 
 // Use routes
 router.use("/heroes", heroRoutes);
 router.use("/admin", adminRoute);
 router.use("/story", storyRoutes);
+router.use("/menu", menuRoutes);
 
 module.exports = router;

@@ -5,7 +5,7 @@ const authMiddleware = require("../middleware/authMiddleware")
 
 // POST /admin/login
 router.post("/login", adminController.login);
-// Example protected route
+//  protected route
 router.get("/dashboard", authMiddleware, (req, res) => {
     res.json({ message: "Welcome to the admin dashboard", admin: req.admin });
 });

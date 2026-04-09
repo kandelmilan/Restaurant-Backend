@@ -2,7 +2,7 @@ const db = require("../config/db");
 
 // Get all stories
 const getAllStories = (callback) => {
-    db.query("SELECT * FROM stories ORDER BY id DESC", callback);
+    db.query("SELECT * FROM stories ORDER BY id ASC", callback);
 };
 
 // Create story
