@@ -1,5 +1,5 @@
+// need to test in postman
 const db = require("../config/db");
-const { get } = require("../routes");
 
 const getAllTestimonials = (callback) => {
     db.query("SELECT * FROM testimonials ORDER BY id ASC", callback);
