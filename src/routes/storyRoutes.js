@@ -5,8 +5,8 @@ const storySchema = require("../validators/storyValidator");
 const validate = require("../middleware/validate");
 
 router.get("/", storyController.getStories);
-router.post("/", validate(storySchema), storyController.createStory);//validate(storySchema)
-router.put("/:id", validate(storySchema), storyController.updateStory);//validate(storySchema),
+router.post("/", validate(storySchema), storyController.createStory);
+router.put("/:id", validate(storySchema), storyController.updateStory);
 router.delete("/:id", storyController.deleteStory);
 
 module.exports = router;
