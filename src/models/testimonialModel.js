@@ -7,7 +7,7 @@ const getAllTestimonials = (callback) => {
 
 const createTestimonial = (data, callback) => {
     const sql = `
-    INSERT INTO testimonial
+    INSERT INTO testimonials
     (author, rating, text)
         VALUES (?, ?, ?)
 `;
@@ -18,7 +18,7 @@ const createTestimonial = (data, callback) => {
     ], callback);
 };
 const updateTestimonial = (id, data, callback) => {
-    const sql = `UPDATE testimonial SET author=?,rating=?,text=?`;
+    const sql = `UPDATE testimonials SET author=?,rating=?,text=?`;
     db.query(sql, [
         data.author,
         data.rating,
@@ -28,7 +28,7 @@ const updateTestimonial = (id, data, callback) => {
 };
 
 const deleteTestimonial = (id, callback) => {
-    db.query(`DELETE FROM testimonial WHERE id=?`, [id], callback);
+    db.query(`DELETE FROM testimonials WHERE id=?`, [id], callback);
     db.query(sql, [
         data.author,
         data.rating,
@@ -38,7 +38,7 @@ const deleteTestimonial = (id, callback) => {
 };
 
 
-exports.module = {
+module.exports = {
     getAllTestimonials,
     updateTestimonial,
     createTestimonial,

@@ -1,59 +1,73 @@
 const testimonialModel = require("../models/testimonialModel");
 
-// GET
+// ======================= GET =======================
 const getTestimonials = (req, res) => {
-    console.log("API Hit: GET /testimonials");
+    console.log("\nAPI Hit: GET /testimonials");
 
     testimonialModel.getAllTestimonials((err, results) => {
         if (err) {
             console.error("GET Error:", err);
-            return res.status(500).json(err);
+            return res.status(500).json({
+                error: "Failed to fetch testimonials",
+                details: err.message,
+            });
         }
 
-        console.log("Testimonials fetched:", results.length);
+        console.log(`${results.length} testimonials fetched`);
+        console.log("Data:", results);
+
         res.json(results);
     });
 };
 
-// POST
+// ======================= POST =======================
 const createTestimonial = (req, res) => {
-    console.log("API Hit: POST /testimonials");
-    console.log("Data:", req.body);
+    console.log("\nAPI Hit: POST /testimonials");
+    console.log("Request Body:", req.body);
 
     const { author, rating, text } = req.body;
 
     // Validation
     if (!author || !text) {
+        console.warn("Validation Failed: Missing fields");
         return res.status(400).json({
             error: "Author and Text are required",
         });
     }
 
-    testimonialModel.createTestimonial({ author, rating, text }, (err, result) => {
-        if (err) {
-            console.error("POST Error:", err);
-            return res.status(500).json(err);
+    testimonialModel.createTestimonial(
+        { author, rating, text },
+        (err, result) => {
+            if (err) {
+                console.error("POST Error:", err);
+                return res.status(500).json({
+                    error: "Failed to create testimonial",
+                    details: err.message,
+                });
+            }
+
+            console.log("Testimonial Created");
+            console.log("Insert ID:", result.insertId);
+
+            res.json({
+                message: "Testimonial created successfully",
+                id: result.insertId,
+            });
         }
-
-        console.log("✅ Testimonial created with ID:", result.insertId);
-
-        res.json({
-            message: "Testimonial created",
-            id: result.insertId,
-        });
-    });
+    );
 };
 
-// PUT
+// ======================= PUT =======================
 const updateTestimonial = (req, res) => {
     const { id } = req.params;
-    const { author, rating, text } = req.body;
 
-    console.log(`API Hit: PUT /testimonials/${id}`);
+    console.log(`\nAPI Hit: PUT /testimonials/${id}`);
     console.log("Update Data:", req.body);
 
     // Validation
+    const { author, rating, text } = req.body;
     if (!author || !text) {
+        console.warn("Validation Failed");
         return res.status(400).json({
             error: "Author and Text are required",
         });
@@ -61,14 +75,10 @@ const updateTestimonial = (req, res) => {
 
     testimonialModel.updateTestimonial(
         id,
-        {
-            author,
-            rating,
-            text,
-        },
+        { author, rating, text },
         (err, result) => {
             if (err) {
-                console.error("Update Error:", err);
+                console.error("UPDATE Error:", err);
                 return res.status(500).json({
                     error: "Failed to update testimonial",
                     details: err.message,
@@ -76,13 +86,13 @@ const updateTestimonial = (req, res) => {
             }
 
             if (result.affectedRows === 0) {
-                console.warn("Testimonial not found:", id);
+                console.warn("No record found for ID:", id);
                 return res.status(404).json({
                     error: "Testimonial not found",
                 });
             }
 
-            console.log("Testimonial updated:", id);
+            console.log("Testimonial Updated:", id);
 
             res.json({
                 message: "Testimonial updated successfully",
@@ -91,15 +101,15 @@ const updateTestimonial = (req, res) => {
     );
 };
 
-// DELETE
+// ======================= DELETE =======================
 const deleteTestimonial = (req, res) => {
     const { id } = req.params;
 
-    console.log(`API Hit: DELETE /testimonials/${id}`);
+    console.log(`\nAPI Hit: DELETE /testimonials/${id}`);
 
     testimonialModel.deleteTestimonial(id, (err, result) => {
         if (err) {
-            console.error("Delete Error:", err);
+            console.error("DELETE Error:", err);
             return res.status(500).json({
                 error: "Failed to delete testimonial",
                 details: err.message,
@@ -107,13 +117,13 @@ const deleteTestimonial = (req, res) => {
         }
 
         if (result.affectedRows === 0) {
-            console.warn("Testimonial not found:", id);
+            console.warn("No record found for ID:", id);
             return res.status(404).json({
                 error: "Testimonial not found",
             });
         }
 
-        console.log("Testimonial deleted:", id);
+        console.log("Testimonial Deleted:", id);
 
         res.json({
             message: "Testimonial deleted successfully",
