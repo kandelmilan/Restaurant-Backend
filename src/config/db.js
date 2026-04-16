@@ -3,7 +3,7 @@ const mysql = require("mysql2");
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "", // XAMPP default
+  password: "", 
   database: "restaurant_db",
   port: 8080
 });
