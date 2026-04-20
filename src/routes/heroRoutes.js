@@ -3,7 +3,6 @@ const router = express.Router();
 const heroController = require("../controllers/heroController");
 const upload = require("../middleware/upload");
 
-// Define wrapper FIRST before using it
 const uploadSingle = (req, res, next) => {
     upload.single("image")(req, res, (err) => {
         if (err) {
