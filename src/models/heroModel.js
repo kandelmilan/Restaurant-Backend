@@ -6,31 +6,32 @@ const getAllHeroes = (callback) => {
 
 const createHero = (data, callback) => {
     const sql = `
-    INSERT INTO heroes
-    (tagline,title,highlight,description,image)
-    VALUES (?, ?, ?, ?, ?)
+        INSERT INTO heroes (tagline, title, highlight, description, image)
+        VALUES (?, ?, ?, ?, ?)
     `;
+
     db.query(sql, [
-        data.tagline,
-        data.title,
-        data.highlight,
-        data.description,
-        data.image
+        data.tagline || "",
+        data.title || "",
+        data.highlight || "",
+        data.description || "",
+        data.image || ""   // SAFE FIX
     ], callback);
 };
 
 const updateHero = (id, data, callback) => {
     const sql = `
-    UPDATE heroes SET
-    tagline=?, title=?, highlight=?, description=?, image=?
-    WHERE id=?
+        UPDATE heroes SET
+        tagline=?, title=?, highlight=?, description=?, image=?
+        WHERE id=?
     `;
+
     db.query(sql, [
-        data.tagline,
-        data.title,
-        data.highlight,
-        data.description,
-        data.image,
+        data.tagline || "",
+        data.title || "",
+        data.highlight || "",
+        data.description || "",
+        data.image || "",
         id
     ], callback);
 };

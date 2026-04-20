@@ -15,28 +15,59 @@ const getHeroes = (req, res) => {
 
 // POST create a hero
 const createHero = (req, res) => {
-    heroModel.createHero(req.body, (err, result) => {
-        if (err) {
-            console.error("Error creating hero:", err);
-            return res.status(500).json(err);
-        }
-        console.log("API Hit: POST /heroes");
-        console.log("Hero created:", req.body);
-        res.status(201).json({ message: "Hero created", id: result.insertId, hero: req.body });
-    });
+    try {
+        const imageUrl = req.file ? req.file.path : "";
+
+        const heroData = {
+            tagline: req.body.tagline || "",
+            title: req.body.title || "",
+            highlight: req.body.highlight || "",
+            description: req.body.description || "",
+            image: imageUrl
+        };
+
+        heroModel.createHero(heroData, (err, result) => {
+            if (err) {
+                console.log("DB ERROR:", err);
+                return res.status(500).json(err);
+            }
+
+            res.status(201).json({
+                message: "Hero created",
+                hero: heroData
+            });
+        });
+        console.log("FILE:", req.file);
+        console.log("BODY:", req.body);
+
+    } catch (err) {
+        console.log("SERVER ERROR:", err);
+        res.status(500).json({ error: err.message });
+    }
 };
 
 // PUT update a hero
 const updateHero = (req, res) => {
     const { id } = req.params;
 
-    heroModel.updateHero(id, req.body, (err) => {
+    const imageUrl = req.file ? req.file.path : req.body.image;
+
+    const heroData = {
+        ...req.body,
+        image: imageUrl
+    };
+
+    heroModel.updateHero(id, heroData, (err) => {
         if (err) return res.status(500).json(err);
+
         console.log(`API Hit: PUT /heroes/${id}`);
-        res.json({ message: "Hero updated" });
+
+        res.json({
+            message: "Hero updated",
+            hero: heroData
+        });
     });
 };
-
 // DELETE a hero
 const deleteHero = (req, res) => {
     const { id } = req.params;
