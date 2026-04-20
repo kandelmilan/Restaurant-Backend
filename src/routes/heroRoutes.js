@@ -3,9 +3,24 @@ const router = express.Router();
 const heroController = require("../controllers/heroController");
 const upload = require("../middleware/upload");
 
+// Define wrapper FIRST before using it
+const uploadSingle = (req, res, next) => {
+    upload.single("image")(req, res, (err) => {
+        if (err) {
+            console.error("MULTER/CLOUDINARY ERROR:", err.message);
+            console.error("FULL ERROR:", err);
+            return res.status(500).json({ error: err.message });
+        }
+        console.log("Upload success - req.file:", req.file);
+        console.log("Upload success - req.body:", req.body);
+        next();
+    });
+};
+
+// Now use it in routes
 router.get("/", heroController.getHeroes);
-router.post("/", upload.single("image"), heroController.createHero);
-router.put("/:id", upload.single("image"), heroController.updateHero);
+router.post("/", uploadSingle, heroController.createHero);
+router.put("/:id", uploadSingle, heroController.updateHero);
 router.delete("/:id", heroController.deleteHero);
 
 module.exports = router;
