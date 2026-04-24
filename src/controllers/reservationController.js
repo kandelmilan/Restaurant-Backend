@@ -37,9 +37,8 @@ const sendReservation = async (req, res) => {
 
             const reservationId = result.insertId;
 
-            // =============================================
+            
             // ADMIN NOTIFICATION EMAIL (English + Japanese)
-            // =============================================
             const adminMail = {
                 from: `"Masala Zen Reservations" <${process.env.GMAIL_USER}>`,
                 to: process.env.GMAIL_USER,
@@ -166,9 +165,8 @@ const sendReservation = async (req, res) => {
                 `
             };
 
-            // =============================================
             // GUEST CONFIRMATION EMAIL (English + Japanese)
-            // =============================================
+
             const confirmationMail = {
                 from: `"Masala Zen 🕉️" <${process.env.GMAIL_USER}>`,
                 to: email,
