@@ -3,9 +3,9 @@ const mysql = require("mysql2");
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "", 
+  password: "",
   database: "restaurant_db",
-  port: 8080
+  port: 3307
 });
 
 db.connect((err) => {

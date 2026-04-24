@@ -1,107 +1,114 @@
 const menuModel = require("../models/menuModel");
 
-// GET
-const getMenu = (req, res) => {
-    console.log("API Hit: GET /menu");
-
-    menuModel.getAllMenu((err, results) => {
+const getMenuItems = (req, res) => {
+    menuModel.getAllMenuItems((err, results) => {
         if (err) {
-            console.error("GET Error:", err);
-            return res.status(500).json(err);
+            console.error("Error fetching menu items:", err);
+            return res.status(500).json({ error: err.message });
         }
-
-        console.log("Menu items:", results.length);
+        console.log("API Hit: GET /menu-items");
         res.json(results);
     });
 };
 
-// POST
-const createMenu = (req, res) => {
-    console.log("API Hit: POST /menu");
-    console.log("Data:", req.body);
+const getMenuItem = (req, res) => {
+    const { id } = req.params;
+    menuModel.getMenuItemById(id, (err, results) => {
+        if (err) return res.status(500).json({ error: err.message });
+        if (results.length === 0) return res.status(404).json({ error: "Item not found" });
+        res.json(results[0]);
+    });
+};
 
-    const { name, price, image } = req.body;
+const createMenuItem = (req, res) => {
+    try {
+        const imageUrl = req.file ? req.file.path : "";
 
-    if (!name || !price || !image) {
-        return res.status(400).json({
-            error: "Name, Price and Image are required",
+        const menuData = {
+            name: req.body.name || "",
+            price: req.body.price || "",
+            image: imageUrl,
+            category: req.body.category || "curry",
+            is_veg: req.body.is_veg === "true" || req.body.is_veg === "1" ? 1 : 0,
+            spice_level: parseInt(req.body.spice_level) || 1,
+            description: req.body.description || ""
+        };
+
+        console.log("Creating menu item:", menuData);
+
+        menuModel.createMenuItem(menuData, (err, result) => {
+            if (err) {
+                console.error("DB ERROR:", err);
+                return res.status(500).json({ error: err.message });
+            }
+            res.status(201).json({
+                message: "Menu item created",
+                item: { id: result.insertId, ...menuData }
+            });
         });
+
+    } catch (err) {
+        console.error("SERVER ERROR:", err);
+        res.status(500).json({ error: err.message });
     }
-
-    menuModel.createMenuItem(req.body, (err, result) => {
-        if (err) {
-            console.error("POST Error:", err);
-            return res.status(500).json(err);
-        }
-
-        console.log("Menu item created:", result.insertId);
-
-        res.json({
-            message: "Menu item created",
-            id: result.insertId,
-        });
-    });
 };
 
-// PUT
-const updateMenu = (req, res) => {
+const updateMenuItem = (req, res) => {
     const { id } = req.params;
 
-    console.log(`API Hit: PUT /menu/${id}`);
-    console.log("Update Data:", req.body);
-
-    menuModel.updateMenuItem(id, req.body, (err, result) => {
-        if (err) {
-            console.error("Update Error:", err);
-            return res.status(500).json({
-                error: "Failed to update menu item",
-                details: err.message,
-            });
+    try {
+        let imageUrl;
+        if (req.file) {
+            imageUrl = req.file.path;
+        } else if (req.body.existingImage) {
+            imageUrl = req.body.existingImage;
+        } else {
+            imageUrl = "";
         }
 
-        if (result.affectedRows === 0) {
-            return res.status(404).json({
-                error: "Menu item not found",
-            });
-        }
+        const menuData = {
+            name: req.body.name || "",
+            price: req.body.price || "",
+            image: imageUrl,
+            category: req.body.category || "curry",
+            is_veg: req.body.is_veg === "true" || req.body.is_veg === "1" ? 1 : 0,
+            spice_level: parseInt(req.body.spice_level) || 1,
+            description: req.body.description || ""
+        };
 
-        console.log("Menu updated:", id);
+        console.log(`Updating menu item ${id}:`, menuData);
 
-        res.json({
-            message: "Menu item updated successfully",
+        menuModel.updateMenuItem(id, menuData, (err) => {
+            if (err) {
+                console.error("DB ERROR:", err);
+                return res.status(500).json({ error: err.message });
+            }
+            res.json({ message: "Menu item updated", item: { id, ...menuData } });
         });
-    });
+
+    } catch (err) {
+        console.error("SERVER ERROR:", err);
+        res.status(500).json({ error: err.message });
+    }
 };
 
-// DELETE
-const deleteMenu = (req, res) => {
+const deleteMenuItem = (req, res) => {
     const { id } = req.params;
 
-    console.log(`API Hit: DELETE /menu/${id}`);
-
-    menuModel.deleteMenuItem(id, (err, result) => {
+    menuModel.deleteMenuItem(id, (err) => {
         if (err) {
-            console.error("Delete Error:", err);
-            return res.status(500).json(err);
+            console.error("DB ERROR:", err);
+            return res.status(500).json({ error: err.message });
         }
-
-        if (result.affectedRows === 0) {
-            return res.status(404).json({
-                error: "Menu item not found",
-            });
-        }
-
-        console.log("Menu deleted:", id);
-
-        res.json({
-            message: "Menu item deleted successfully",
-        });
+        console.log(`API Hit: DELETE /menu-items/${id}`);
+        res.json({ message: "Menu item deleted" });
     });
 };
 
 module.exports = {
-    getMenu,
-    createMenu,
-    updateMenu,
-    deleteMenu,
+    getMenuItems,
+    getMenuItem,
+    createMenuItem,
+    updateMenuItem,
+    deleteMenuItem
 };

@@ -1,12 +1,22 @@
 const express = require("express");
 const router = express.Router();
-const controller = require("../controllers/menuController");
-const validate = require("../middleware/validate");
-const menuSchema = require("../validators/menuValidator");
+const menuController = require("../controllers/menuController");
+const upload = require("../middleware/upload");
 
-router.get("/", controller.getMenu);
-router.post("/", validate(menuSchema), controller.createMenu);
-router.put("/:id", validate(menuSchema), controller.updateMenu);
-router.delete("/:id", controller.deleteMenu);
+const uploadSingle = (req, res, next) => {
+    upload.single("image")(req, res, (err) => {
+        if (err) {
+            console.error("MULTER/CLOUDINARY ERROR:", err.message);
+            return res.status(500).json({ error: err.message });
+        }
+        next();
+    });
+};
+
+router.get("/", menuController.getMenuItems);
+router.get("/:id", menuController.getMenuItem);
+router.post("/", uploadSingle, menuController.createMenuItem);
+router.put("/:id", uploadSingle, menuController.updateMenuItem);
+router.delete("/:id", menuController.deleteMenuItem);
 
 module.exports = router;
