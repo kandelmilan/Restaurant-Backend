@@ -5,7 +5,7 @@ const getHero = (req, res) => {
 
     heroModel.getHeroByLanguage(language, (err, results) => {
         if (err) {
-            console.error("❌ Error fetching hero:", err);
+            console.error("Error fetching hero:", err);
             return res.status(500).json({ error: err.message });
         }
         res.json(results || []);
@@ -23,30 +23,30 @@ const getAllHeroes = (req, res) => {
 };
 
 const createHero = (req, res) => {
-    console.log("📨 CreateHero called");
-    console.log("📨 req.body:", req.body);
-    console.log("📨 req.file:", req.file);
+    console.log("CreateHero called");
+    console.log("req.body:", req.body);
+    console.log("req.file:", req.file);
 
     const { enTagline, enTitle, enHighlight, enDescription, jaTagline, jaTitle, jaHighlight, jaDescription } = req.body;
 
     // Validation
     if (!enTitle) {
-        console.error("❌ English title is missing");
+        console.error("English title is missing");
         return res.status(400).json({ error: "English title is required" });
     }
 
     if (!jaTitle) {
-        console.error("❌ Japanese title is missing");
+        console.error("Japanese title is missing");
         return res.status(400).json({ error: "Japanese title is required" });
     }
 
     if (!req.file) {
-        console.error("❌ Image file is missing");
+        console.error("Image file is missing");
         return res.status(400).json({ error: "Image is required" });
     }
 
     const imageUrl = req.file.path;
-    console.log("✅ Image URL:", imageUrl);
+    console.log("Image URL:", imageUrl);
 
     // Create hero in main table
     heroModel.createHero(
@@ -71,7 +71,7 @@ const createHero = (req, res) => {
             const checkComplete = () => {
                 translationsDone++;
                 if (translationsDone === 2) {
-                    console.log("✅ All translations added");
+                    console.log("All translations added");
                     res.status(201).json({
                         success: true,
                         message: "Hero created successfully",
@@ -107,9 +107,9 @@ const createHero = (req, res) => {
 
 const updateHero = (req, res) => {
     const { id } = req.params;
-    console.log("📝 UpdateHero called for ID:", id);
-    console.log("📝 req.body:", req.body);
-    console.log("📝 req.file:", req.file);
+    console.log("UpdateHero called for ID:", id);
+    console.log("req.body:", req.body);
+    console.log("req.file:", req.file);
 
     const { enTagline, enTitle, enHighlight, enDescription, jaTagline, jaTitle, jaHighlight, jaDescription, existingImage } = req.body;
 
@@ -128,7 +128,7 @@ const updateHero = (req, res) => {
         return res.status(400).json({ error: "Image is required" });
     }
 
-    console.log("✅ Image URL:", imageUrl);
+    console.log("Image URL:", imageUrl);
 
     // Update main hero table
     heroModel.updateHero(id, {
@@ -139,7 +139,7 @@ const updateHero = (req, res) => {
         image: imageUrl
     }, (err) => {
         if (err) {
-            console.error("❌ DB Error updating hero:", err);
+            console.error("DB Error updating hero:", err);
             return res.status(500).json({ error: "Database error: " + err.message });
         }
 
@@ -148,7 +148,7 @@ const updateHero = (req, res) => {
         const checkComplete = () => {
             translationsDone++;
             if (translationsDone === 2) {
-                console.log("✅ All translations updated");
+                console.log("All translations updated");
                 res.json({
                     success: true,
                     message: "Hero updated successfully"
@@ -163,7 +163,7 @@ const updateHero = (req, res) => {
             highlight: enHighlight || "",
             description: enDescription || ""
         }, (transErr) => {
-            if (transErr) console.error("⚠️ Error updating EN translation:", transErr);
+            if (transErr) console.error("Error updating EN translation:", transErr);
             checkComplete();
         });
 
@@ -174,7 +174,7 @@ const updateHero = (req, res) => {
             highlight: jaHighlight || "",
             description: jaDescription || ""
         }, (transErr) => {
-            if (transErr) console.error("⚠️ Error updating JA translation:", transErr);
+            if (transErr) console.error("Error updating JA translation:", transErr);
             checkComplete();
         });
     });
@@ -182,14 +182,14 @@ const updateHero = (req, res) => {
 
 const deleteHero = (req, res) => {
     const { id } = req.params;
-    console.log("🗑️ DeleteHero called for ID:", id);
+    console.log("DeleteHero called for ID:", id);
 
     heroModel.deleteHero(id, (err) => {
         if (err) {
-            console.error("❌ Error deleting hero:", err);
+            console.error("Error deleting hero:", err);
             return res.status(500).json({ error: err.message });
         }
-        console.log("✅ Hero deleted successfully");
+        console.log("Hero deleted successfully");
         res.json({ message: "Hero deleted successfully" });
     });
 };
