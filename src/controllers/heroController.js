@@ -15,7 +15,7 @@ const getHero = (req, res) => {
 const getAllHeroes = (req, res) => {
     heroModel.getAllHeroes((err, results) => {
         if (err) {
-            console.error("❌ Error fetching heroes:", err);
+            console.error("Error fetching heroes:", err);
             return res.status(500).json({ error: err.message });
         }
         res.json(results || []);
@@ -59,12 +59,12 @@ const createHero = (req, res) => {
         },
         (err, result) => {
             if (err) {
-                console.error("❌ DB Error creating hero:", err);
+                console.error("DB Error creating hero:", err);
                 return res.status(500).json({ error: "Database error: " + err.message });
             }
 
             const heroId = result.insertId;
-            console.log("✅ Hero created with ID:", heroId);
+            console.log("Hero created with ID:", heroId);
 
             // Track if both translations are done
             let translationsDone = 0;
@@ -87,7 +87,7 @@ const createHero = (req, res) => {
                 highlight: enHighlight || "",
                 description: enDescription || ""
             }, (transErr) => {
-                if (transErr) console.error("⚠️ Error adding EN translation:", transErr);
+                if (transErr) console.error("Error adding EN translation:", transErr);
                 checkComplete();
             });
 
@@ -98,7 +98,7 @@ const createHero = (req, res) => {
                 highlight: jaHighlight || "",
                 description: jaDescription || ""
             }, (transErr) => {
-                if (transErr) console.error("⚠️ Error adding JA translation:", transErr);
+                if (transErr) console.error("Error adding JA translation:", transErr);
                 checkComplete();
             });
         }
