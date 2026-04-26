@@ -1,6 +1,6 @@
 const testimonialModel = require("../models/testimonialModel");
 
-// ======================= GET =======================
+// GET 
 const getTestimonials = (req, res) => {
     console.log("\nAPI Hit: GET /testimonials");
 
@@ -20,7 +20,7 @@ const getTestimonials = (req, res) => {
     });
 };
 
-// ======================= POST =======================
+//  POST 
 const createTestimonial = (req, res) => {
     console.log("\nAPI Hit: POST /testimonials");
     console.log("Request Body:", req.body);
@@ -57,7 +57,7 @@ const createTestimonial = (req, res) => {
     );
 };
 
-// ======================= PUT =======================
+//  PUT 
 const updateTestimonial = (req, res) => {
     const { id } = req.params;
 
@@ -101,7 +101,7 @@ const updateTestimonial = (req, res) => {
     );
 };
 
-// ======================= DELETE =======================
+//  DELETE 
 const deleteTestimonial = (req, res) => {
     const { id } = req.params;
 
