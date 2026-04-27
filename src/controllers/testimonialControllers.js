@@ -13,17 +13,12 @@ const getTestimonials = (req, res) => {
             });
         }
 
-        console.log(`${results.length} testimonials fetched`);
-        console.log("Data:", results);
-
         res.json(results);
     });
 };
 
 //  POST 
 const createTestimonial = (req, res) => {
-    console.log("\nAPI Hit: POST /testimonials");
-    console.log("Request Body:", req.body);
 
     const { author, rating, text } = req.body;
 
@@ -60,9 +55,6 @@ const createTestimonial = (req, res) => {
 //  PUT 
 const updateTestimonial = (req, res) => {
     const { id } = req.params;
-
-    console.log(`\nAPI Hit: PUT /testimonials/${id}`);
-    console.log("Update Data:", req.body);
 
     // Validation
     const { author, rating, text } = req.body;
@@ -105,7 +97,6 @@ const updateTestimonial = (req, res) => {
 const deleteTestimonial = (req, res) => {
     const { id } = req.params;
 
-    console.log(`\nAPI Hit: DELETE /testimonials/${id}`);
 
     testimonialModel.deleteTestimonial(id, (err, result) => {
         if (err) {
