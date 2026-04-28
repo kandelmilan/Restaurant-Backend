@@ -48,7 +48,7 @@ const login = (req, res) => {
     return res.json({
       success: true,
       message: "Login successful",
-      token, // 🔥 important
+      token,
       admin: {
         id: admin.id,
         name: admin.name,
