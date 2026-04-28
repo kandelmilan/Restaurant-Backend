@@ -2,7 +2,6 @@ const testimonialModel = require("../models/testimonialModel");
 
 // GET 
 const getTestimonials = (req, res) => {
-    console.log("\nAPI Hit: GET /testimonials");
 
     testimonialModel.getAllTestimonials((err, results) => {
         if (err) {
