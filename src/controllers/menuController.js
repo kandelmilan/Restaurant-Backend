@@ -6,7 +6,6 @@ const getMenuItems = (req, res) => {
             console.error("Error fetching menu items:", err);
             return res.status(500).json({ error: err.message });
         }
-        console.log("API Hit: GET /menu-items");
         res.json(results);
     });
 };
