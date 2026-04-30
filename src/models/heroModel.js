@@ -45,29 +45,29 @@ const getAllHeroes = (callback) => {
 };
 
 const createHero = (data, callback) => {
-    console.log("🗄️ heroModel.createHero called with:", data);
+    console.log("heroModel.createHero called with:", data);
     
     const sql = `INSERT INTO heroes (tagline, title, highlight, description, image) VALUES (?, ?, ?, ?, ?)`;
     const values = [data.tagline, data.title, data.highlight, data.description, data.image];
     
-    console.log("🗄️ SQL values:", values);
+    console.log("SQL values:", values);
     
     db.query(sql, values, callback);
 };
 
 const updateHero = (id, data, callback) => {
-    console.log("🗄️ heroModel.updateHero called with ID:", id, "data:", data);
+    console.log("heroModel.updateHero called with ID:", id, "data:", data);
     
     const sql = `UPDATE heroes SET tagline=?, title=?, highlight=?, description=?, image=? WHERE id=?`;
     const values = [data.tagline, data.title, data.highlight, data.description, data.image, id];
     
-    console.log("🗄️ SQL values:", values);
+    console.log("SQL values:", values);
     
     db.query(sql, values, callback);
 };
 
 const addHeroTranslation = (heroId, language, data, callback) => {
-    console.log("🗄️ heroModel.addHeroTranslation called - heroId:", heroId, "language:", language, "data:", data);
+    console.log("heroModel.addHeroTranslation called - heroId:", heroId, "language:", language, "data:", data);
     
     const sql = `
         INSERT INTO hero_translations (hero_id, language, tagline, title, highlight, description)
@@ -81,10 +81,10 @@ const addHeroTranslation = (heroId, language, data, callback) => {
     
     const values = [heroId, language, data.tagline, data.title, data.highlight, data.description];
     
-    console.log("🗄️ SQL values:", values);
+    console.log("SQL values:", values);
     
     db.query(sql, values, (err, result) => {
-        console.log("🗄️ Translation result:", err ? `Error: ${err.message}` : "Success");
+        console.log("Translation result:", err ? `Error: ${err.message}` : "Success");
         callback(err, result);
     });
 };
