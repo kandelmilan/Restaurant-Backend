@@ -1,8 +1,8 @@
 require("dotenv").config();
 const app = require("./app");
 const db = require("./config/db");
-const PORT = 8000;
-// Test DB connection
+const PORT = process.env.PORT;
+
 db.query("SHOW TABLES", (err, result) => {
     if (err) {
         console.log("Error checking tables:", err);
